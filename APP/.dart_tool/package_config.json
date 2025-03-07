@@ -38,6 +38,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "custom_sliding_segmented_control",
+      "rootUri": "file:///Users/suhyeon/.pub-cache/hosted/pub.dev/custom_sliding_segmented_control-1.8.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "dio",
       "rootUri": "file:///Users/suhyeon/.pub-cache/hosted/pub.dev/dio-5.8.0+1",
       "packageUri": "lib/",
@@ -236,7 +242,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-03-04T11:50:01.155421Z",
+  "generated": "2025-03-05T10:54:53.898738Z",
   "generator": "pub",
   "generatorVersion": "3.5.4",
   "flutterRoot": "file:///Users/suhyeon/Library/flutter",
