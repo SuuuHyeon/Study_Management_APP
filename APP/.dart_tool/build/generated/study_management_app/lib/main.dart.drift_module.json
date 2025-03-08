@@ -1,0 +1,9 @@
+{
+  "elements": {},
+  "imports": [
+    "package:flutter/material.dart",
+    "package:flutter_riverpod/flutter_riverpod.dart",
+    "package:study_management_app/core/router/routes.dart",
+    "package:study_management_app/data/sources/local/todo.dart"
+  ]
+}

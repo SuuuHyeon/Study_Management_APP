@@ -1,0 +1,10 @@
+{
+  "elements": {},
+  "imports": [
+    "package:flutter/material.dart",
+    "package:flutter_riverpod/flutter_riverpod.dart",
+    "package:study_management_app/presentation/ui/widgets/w_to_do_item.dart",
+    "package:study_management_app/presentation/viewModel/todo_list_view_model.dart",
+    "package:study_management_app/data/models/dto_todo.dart"
+  ]
+}

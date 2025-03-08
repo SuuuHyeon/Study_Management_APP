@@ -37,6 +37,10 @@ dependencies:
   # 네트워크 통신
   dio: ^5.8.0+1
 
+  # 로컬DB (drift)
+  drift: ^2.25.1
+  drift_flutter: ^0.2.4
+
   # 상태관리 Riverpod
   flutter_riverpod: ^2.6.1
 
@@ -51,6 +55,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  drift_dev: ^2.25.2
+  build_runner: ^2.4.15
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

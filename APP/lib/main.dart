@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_management_app/core/router/routes.dart';
+import 'package:study_management_app/data/sources/local/todo.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final database = AppDatabase();
+
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(title: '물 마시기', category: '일상'));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(title: '3km 뛰기', category: '일상'));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(title: '공부관리앱 프로젝트', category: '프로젝트'));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(title: 'Riverpod 공부', category: '공부'));
+
   runApp(
     const ProviderScope(
       child: MyApp(),

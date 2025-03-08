@@ -1,0 +1,12 @@
+{
+  "elements": {},
+  "imports": [
+    "package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart",
+    "package:flutter/cupertino.dart",
+    "package:flutter/material.dart",
+    "package:flutter_riverpod/flutter_riverpod.dart",
+    "package:study_management_app/core/constatnts/todo_filter.dart",
+    "package:study_management_app/core/providers/app_state_provider.dart",
+    "package:study_management_app/presentation/viewModel/todo_list_view_model.dart"
+  ]
+}

@@ -1,0 +1,1 @@
+{"valid_import":true,"imports":[{"uri":"package:flutter/material.dart","transitive":false},{"uri":"package:flutter_riverpod/flutter_riverpod.dart","transitive":false},{"uri":"package:study_management_app/core/router/routes.dart","transitive":false},{"uri":"package:study_management_app/data/sources/local/todo.dart","transitive":false}],"elements":[]}
