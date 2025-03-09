@@ -27,8 +27,8 @@ class $ToDoItemTable extends ToDoItem
       const VerificationMeta('startTime');
   @override
   late final GeneratedColumn<DateTime> startTime = GeneratedColumn<DateTime>(
-      'start_time', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+      'start_time', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
   static const VerificationMeta _categoryMeta =
       const VerificationMeta('category');
   @override
@@ -45,9 +45,18 @@ class $ToDoItemTable extends ToDoItem
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("is_checked" IN (0, 1))'),
       defaultValue: const Constant(false));
+  static const VerificationMeta _isHoldMeta = const VerificationMeta('isHold');
+  @override
+  late final GeneratedColumn<bool> isHold = GeneratedColumn<bool>(
+      'is_hold', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_hold" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, title, startTime, category, isChecked];
+      [id, title, startTime, category, isChecked, isHold];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -70,6 +79,8 @@ class $ToDoItemTable extends ToDoItem
     if (data.containsKey('start_time')) {
       context.handle(_startTimeMeta,
           startTime.isAcceptableOrUnknown(data['start_time']!, _startTimeMeta));
+    } else if (isInserting) {
+      context.missing(_startTimeMeta);
     }
     if (data.containsKey('category')) {
       context.handle(_categoryMeta,
@@ -80,6 +91,10 @@ class $ToDoItemTable extends ToDoItem
     if (data.containsKey('is_checked')) {
       context.handle(_isCheckedMeta,
           isChecked.isAcceptableOrUnknown(data['is_checked']!, _isCheckedMeta));
+    }
+    if (data.containsKey('is_hold')) {
+      context.handle(_isHoldMeta,
+          isHold.isAcceptableOrUnknown(data['is_hold']!, _isHoldMeta));
     }
     return context;
   }
@@ -95,11 +110,13 @@ class $ToDoItemTable extends ToDoItem
       title: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       startTime: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_time']),
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_time'])!,
       category: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}category'])!,
       isChecked: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_checked'])!,
+      isHold: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_hold'])!,
     );
   }
 
@@ -112,25 +129,26 @@ class $ToDoItemTable extends ToDoItem
 class ToDoItemData extends DataClass implements Insertable<ToDoItemData> {
   final int id;
   final String title;
-  final DateTime? startTime;
+  final DateTime startTime;
   final String category;
   final bool isChecked;
+  final bool isHold;
   const ToDoItemData(
       {required this.id,
       required this.title,
-      this.startTime,
+      required this.startTime,
       required this.category,
-      required this.isChecked});
+      required this.isChecked,
+      required this.isHold});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['title'] = Variable<String>(title);
-    if (!nullToAbsent || startTime != null) {
-      map['start_time'] = Variable<DateTime>(startTime);
-    }
+    map['start_time'] = Variable<DateTime>(startTime);
     map['category'] = Variable<String>(category);
     map['is_checked'] = Variable<bool>(isChecked);
+    map['is_hold'] = Variable<bool>(isHold);
     return map;
   }
 
@@ -138,11 +156,10 @@ class ToDoItemData extends DataClass implements Insertable<ToDoItemData> {
     return ToDoItemCompanion(
       id: Value(id),
       title: Value(title),
-      startTime: startTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(startTime),
+      startTime: Value(startTime),
       category: Value(category),
       isChecked: Value(isChecked),
+      isHold: Value(isHold),
     );
   }
 
@@ -152,9 +169,10 @@ class ToDoItemData extends DataClass implements Insertable<ToDoItemData> {
     return ToDoItemData(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
-      startTime: serializer.fromJson<DateTime?>(json['startTime']),
+      startTime: serializer.fromJson<DateTime>(json['startTime']),
       category: serializer.fromJson<String>(json['category']),
       isChecked: serializer.fromJson<bool>(json['isChecked']),
+      isHold: serializer.fromJson<bool>(json['isHold']),
     );
   }
   @override
@@ -163,24 +181,27 @@ class ToDoItemData extends DataClass implements Insertable<ToDoItemData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
-      'startTime': serializer.toJson<DateTime?>(startTime),
+      'startTime': serializer.toJson<DateTime>(startTime),
       'category': serializer.toJson<String>(category),
       'isChecked': serializer.toJson<bool>(isChecked),
+      'isHold': serializer.toJson<bool>(isHold),
     };
   }
 
   ToDoItemData copyWith(
           {int? id,
           String? title,
-          Value<DateTime?> startTime = const Value.absent(),
+          DateTime? startTime,
           String? category,
-          bool? isChecked}) =>
+          bool? isChecked,
+          bool? isHold}) =>
       ToDoItemData(
         id: id ?? this.id,
         title: title ?? this.title,
-        startTime: startTime.present ? startTime.value : this.startTime,
+        startTime: startTime ?? this.startTime,
         category: category ?? this.category,
         isChecked: isChecked ?? this.isChecked,
+        isHold: isHold ?? this.isHold,
       );
   ToDoItemData copyWithCompanion(ToDoItemCompanion data) {
     return ToDoItemData(
@@ -189,6 +210,7 @@ class ToDoItemData extends DataClass implements Insertable<ToDoItemData> {
       startTime: data.startTime.present ? data.startTime.value : this.startTime,
       category: data.category.present ? data.category.value : this.category,
       isChecked: data.isChecked.present ? data.isChecked.value : this.isChecked,
+      isHold: data.isHold.present ? data.isHold.value : this.isHold,
     );
   }
 
@@ -199,13 +221,15 @@ class ToDoItemData extends DataClass implements Insertable<ToDoItemData> {
           ..write('title: $title, ')
           ..write('startTime: $startTime, ')
           ..write('category: $category, ')
-          ..write('isChecked: $isChecked')
+          ..write('isChecked: $isChecked, ')
+          ..write('isHold: $isHold')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, startTime, category, isChecked);
+  int get hashCode =>
+      Object.hash(id, title, startTime, category, isChecked, isHold);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -214,29 +238,34 @@ class ToDoItemData extends DataClass implements Insertable<ToDoItemData> {
           other.title == this.title &&
           other.startTime == this.startTime &&
           other.category == this.category &&
-          other.isChecked == this.isChecked);
+          other.isChecked == this.isChecked &&
+          other.isHold == this.isHold);
 }
 
 class ToDoItemCompanion extends UpdateCompanion<ToDoItemData> {
   final Value<int> id;
   final Value<String> title;
-  final Value<DateTime?> startTime;
+  final Value<DateTime> startTime;
   final Value<String> category;
   final Value<bool> isChecked;
+  final Value<bool> isHold;
   const ToDoItemCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.startTime = const Value.absent(),
     this.category = const Value.absent(),
     this.isChecked = const Value.absent(),
+    this.isHold = const Value.absent(),
   });
   ToDoItemCompanion.insert({
     this.id = const Value.absent(),
     required String title,
-    this.startTime = const Value.absent(),
+    required DateTime startTime,
     required String category,
     this.isChecked = const Value.absent(),
+    this.isHold = const Value.absent(),
   })  : title = Value(title),
+        startTime = Value(startTime),
         category = Value(category);
   static Insertable<ToDoItemData> custom({
     Expression<int>? id,
@@ -244,6 +273,7 @@ class ToDoItemCompanion extends UpdateCompanion<ToDoItemData> {
     Expression<DateTime>? startTime,
     Expression<String>? category,
     Expression<bool>? isChecked,
+    Expression<bool>? isHold,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -251,21 +281,24 @@ class ToDoItemCompanion extends UpdateCompanion<ToDoItemData> {
       if (startTime != null) 'start_time': startTime,
       if (category != null) 'category': category,
       if (isChecked != null) 'is_checked': isChecked,
+      if (isHold != null) 'is_hold': isHold,
     });
   }
 
   ToDoItemCompanion copyWith(
       {Value<int>? id,
       Value<String>? title,
-      Value<DateTime?>? startTime,
+      Value<DateTime>? startTime,
       Value<String>? category,
-      Value<bool>? isChecked}) {
+      Value<bool>? isChecked,
+      Value<bool>? isHold}) {
     return ToDoItemCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       startTime: startTime ?? this.startTime,
       category: category ?? this.category,
       isChecked: isChecked ?? this.isChecked,
+      isHold: isHold ?? this.isHold,
     );
   }
 
@@ -287,6 +320,9 @@ class ToDoItemCompanion extends UpdateCompanion<ToDoItemData> {
     if (isChecked.present) {
       map['is_checked'] = Variable<bool>(isChecked.value);
     }
+    if (isHold.present) {
+      map['is_hold'] = Variable<bool>(isHold.value);
+    }
     return map;
   }
 
@@ -297,7 +333,8 @@ class ToDoItemCompanion extends UpdateCompanion<ToDoItemData> {
           ..write('title: $title, ')
           ..write('startTime: $startTime, ')
           ..write('category: $category, ')
-          ..write('isChecked: $isChecked')
+          ..write('isChecked: $isChecked, ')
+          ..write('isHold: $isHold')
           ..write(')'))
         .toString();
   }
@@ -317,16 +354,18 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 typedef $$ToDoItemTableCreateCompanionBuilder = ToDoItemCompanion Function({
   Value<int> id,
   required String title,
-  Value<DateTime?> startTime,
+  required DateTime startTime,
   required String category,
   Value<bool> isChecked,
+  Value<bool> isHold,
 });
 typedef $$ToDoItemTableUpdateCompanionBuilder = ToDoItemCompanion Function({
   Value<int> id,
   Value<String> title,
-  Value<DateTime?> startTime,
+  Value<DateTime> startTime,
   Value<String> category,
   Value<bool> isChecked,
+  Value<bool> isHold,
 });
 
 class $$ToDoItemTableFilterComposer
@@ -352,6 +391,9 @@ class $$ToDoItemTableFilterComposer
 
   ColumnFilters<bool> get isChecked => $composableBuilder(
       column: $table.isChecked, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isHold => $composableBuilder(
+      column: $table.isHold, builder: (column) => ColumnFilters(column));
 }
 
 class $$ToDoItemTableOrderingComposer
@@ -377,6 +419,9 @@ class $$ToDoItemTableOrderingComposer
 
   ColumnOrderings<bool> get isChecked => $composableBuilder(
       column: $table.isChecked, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isHold => $composableBuilder(
+      column: $table.isHold, builder: (column) => ColumnOrderings(column));
 }
 
 class $$ToDoItemTableAnnotationComposer
@@ -402,6 +447,9 @@ class $$ToDoItemTableAnnotationComposer
 
   GeneratedColumn<bool> get isChecked =>
       $composableBuilder(column: $table.isChecked, builder: (column) => column);
+
+  GeneratedColumn<bool> get isHold =>
+      $composableBuilder(column: $table.isHold, builder: (column) => column);
 }
 
 class $$ToDoItemTableTableManager extends RootTableManager<
@@ -429,9 +477,10 @@ class $$ToDoItemTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String> title = const Value.absent(),
-            Value<DateTime?> startTime = const Value.absent(),
+            Value<DateTime> startTime = const Value.absent(),
             Value<String> category = const Value.absent(),
             Value<bool> isChecked = const Value.absent(),
+            Value<bool> isHold = const Value.absent(),
           }) =>
               ToDoItemCompanion(
             id: id,
@@ -439,13 +488,15 @@ class $$ToDoItemTableTableManager extends RootTableManager<
             startTime: startTime,
             category: category,
             isChecked: isChecked,
+            isHold: isHold,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             required String title,
-            Value<DateTime?> startTime = const Value.absent(),
+            required DateTime startTime,
             required String category,
             Value<bool> isChecked = const Value.absent(),
+            Value<bool> isHold = const Value.absent(),
           }) =>
               ToDoItemCompanion.insert(
             id: id,
@@ -453,6 +504,7 @@ class $$ToDoItemTableTableManager extends RootTableManager<
             startTime: startTime,
             category: category,
             isChecked: isChecked,
+            isHold: isHold,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

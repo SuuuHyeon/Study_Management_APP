@@ -25,14 +25,9 @@ class MainScreen extends ConsumerWidget {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: CustomAppBar(bottomIndex: bottomIndex),
-        body: Stack(
-          alignment: Alignment.center,
-          children: [
-            IndexedStack(
-              index: bottomIndex,
-              children: tabList,
-            ),
-          ],
+        body: IndexedStack(
+          index: bottomIndex,
+          children: tabList,
         ),
         bottomNavigationBar: const BottomNavBar());
   }

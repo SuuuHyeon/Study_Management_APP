@@ -2,8 +2,8 @@
   "elements": {},
   "imports": [
     "package:flutter_riverpod/flutter_riverpod.dart",
-    "package:study_management_app/core/providers/app_state_provider.dart",
-    "package:study_management_app/data/models/dto_todo.dart",
-    "package:study_management_app/core/constatnts/todo_filter.dart"
+    "package:study_management_app/core/constatnts/todo_filter.dart",
+    "package:study_management_app/data/repository/todo_repository.dart",
+    "package:study_management_app/data/sources/local/todo.dart"
   ]
 }

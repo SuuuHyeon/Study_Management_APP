@@ -1,30 +1,75 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:study_management_app/core/constatnts/todo_filter.dart';
+import 'package:study_management_app/core/providers/app_state_provider.dart';
 import 'package:study_management_app/data/repository/todo_repository.dart';
 import 'package:study_management_app/data/sources/local/todo.dart';
 
+class ToDoListViewModel extends StateNotifier<Map<ToDoFilter, List<ToDoItemData>>> {
+  final ToDoRepository _repository;
+  final List<StreamSubscription> _subscriptions = [];
 
-class ToDoListViewModel extends StateNotifier<List<ToDoItemData>> {
-  final ToDoRepository _toDoRepository;
-
-  ToDoListViewModel(this._toDoRepository) : super([]) {
-    _watchToDoList();
+  ToDoListViewModel(this._repository)
+      : super({
+    ToDoFilter.today: [],
+    ToDoFilter.upcoming: [],
+    ToDoFilter.hold: [],
+  }) {
+    _initListeners();
   }
 
-  /// DB의 투두 리스트를 실시간으로 감지하고 상태를 갱신
-  void _watchToDoList() {
-    _toDoRepository.watchToDoList().listen((list) {
-      state = list;
-    });
+  void _initListeners() {
+    _subscriptions.add(_repository.watchTodayToDos().listen((list) {
+      for (var item in list) {
+        print('---------------------- title: ${item.title} ------------------------');
+      }
+      if (mounted) {
+        state = {
+          ...state,
+          ToDoFilter.today: list,
+        };
+      }
+    }));
+
+    _subscriptions.add(_repository.watchUpcomingToDos().listen((list) {
+      for (var item in list) {
+        print('---------------------- title: ${item.title} ------------------------');
+      }
+      if (mounted) {
+        state = {
+          ...state,
+          ToDoFilter.upcoming: list,
+        };
+      }
+    }));
+
+    _subscriptions.add(_repository.watchHoldToDos().listen((list) {
+      if (mounted) {
+        state = {
+          ...state,
+          ToDoFilter.hold: list,
+        };
+      }
+    }));
   }
 
-  /// 토글 체크
   Future<void> toggleCheck(int id, bool isChecked) async {
-    await _toDoRepository.toggleCheck(id, isChecked);
+    await _repository.toggleCheck(id, isChecked);
+  }
+
+  @override
+  void dispose() {
+    for (final sub in _subscriptions) {
+      sub.cancel();  // 🟢 구독 해제
+    }
+    super.dispose();
   }
 }
 
-/// 투두 리스트 프로바이더
-final toDoListProvider = StateNotifierProvider<ToDoListViewModel,
-    List<ToDoItemData>>(
-        (ref) => ToDoListViewModel(ref.watch(toDoRepositoryProvider))
-);
+final toDoListProvider = StateNotifierProvider.autoDispose<ToDoListViewModel,
+    Map<ToDoFilter, List<ToDoItemData>>>((ref) {
+  print('autoDispose test');
+  final repository = ref.watch(toDoRepositoryProvider);
+  return ToDoListViewModel(repository);
+});

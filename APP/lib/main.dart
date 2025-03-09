@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_management_app/core/router/routes.dart';
@@ -8,10 +9,54 @@ void main() async {
 
   final database = AppDatabase();
 
-  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(title: '물 마시기', category: '일상'));
-  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(title: '3km 뛰기', category: '일상'));
-  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(title: '공부관리앱 프로젝트', category: '프로젝트'));
-  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(title: 'Riverpod 공부', category: '공부'));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: '물 마시기', category: '일상', startTime: DateTime.now()));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: '3km 뛰기',
+  //     category: '일상',
+  //     startTime: DateTime.now().add(Duration(hours: 1))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: '공부관리앱 프로젝트',
+  //     category: '프로젝트',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: 'Riverpod 공부',
+  //     category: '공부',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: 'Riverpod 공부',
+  //     category: '공부',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: 'Riverpod 공부',
+  //     category: '공부',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: 'Riverpod 공부',
+  //     category: '공부',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: 'Riverpod 공부',
+  //     category: '공부',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: 'Riverpod 공부',
+  //     category: '공부',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: 'Riverpod 공부',
+  //     category: '공부',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: 'Riverpod 공부',
+  //     category: '공부',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  // await database.into(database.toDoItem).insert(ToDoItemCompanion.insert(
+  //     title: 'Riverpod 공부',
+  //     category: '공부',
+  //     startTime: DateTime.now().add(Duration(days: 2))));
+  //
+  // await database.delete(database.toDoItem).go();
 
   runApp(
     const ProviderScope(

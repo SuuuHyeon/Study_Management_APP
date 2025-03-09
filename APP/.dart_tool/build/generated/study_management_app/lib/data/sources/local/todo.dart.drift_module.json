@@ -7,7 +7,7 @@
       },
       "declaration": {
         "source_uri": "package:study_management_app/data/sources/local/todo.dart",
-        "offset": 463,
+        "offset": 526,
         "name": "AppDatabase"
       },
       "references": [
@@ -26,7 +26,7 @@
       "views": [],
       "includes": [],
       "queries": [],
-      "schema_version": 1,
+      "schema_version": 2,
       "daos": [],
       "has_constructor_arg": false
     },
@@ -94,7 +94,7 @@
           "sqlType": {
             "builtin": "dateTime"
           },
-          "nullable": true,
+          "nullable": false,
           "nameInSql": "start_time",
           "nameInDart": "startTime",
           "declaration": {
@@ -120,7 +120,7 @@
           "nameInDart": "category",
           "declaration": {
             "source_uri": "package:study_management_app/data/sources/local/todo.dart",
-            "offset": 316,
+            "offset": 305,
             "name": "category"
           },
           "typeConverter": null,
@@ -141,8 +141,38 @@
           "nameInDart": "isChecked",
           "declaration": {
             "source_uri": "package:study_management_app/data/sources/local/todo.dart",
-            "offset": 356,
+            "offset": 345,
             "name": "isChecked"
+          },
+          "typeConverter": null,
+          "clientDefaultCode": null,
+          "defaultArgument": {
+            "elements": [
+              "const ",
+              {
+                "lexeme": "Constant",
+                "import_uri": "package:drift/src/runtime/query_builder/query_builder.dart"
+              },
+              "(false)"
+            ]
+          },
+          "overriddenJsonName": null,
+          "referenceName": null,
+          "documentationComment": null,
+          "constraints": [],
+          "customConstraints": null
+        },
+        {
+          "sqlType": {
+            "builtin": "bool"
+          },
+          "nullable": false,
+          "nameInSql": "is_hold",
+          "nameInDart": "isHold",
+          "declaration": {
+            "source_uri": "package:study_management_app/data/sources/local/todo.dart",
+            "offset": 424,
+            "name": "isHold"
           },
           "typeConverter": null,
           "clientDefaultCode": null,
