@@ -6,24 +6,23 @@ import 'package:study_management_app/core/providers/app_state_provider.dart';
 import 'package:study_management_app/data/repository/todo_repository.dart';
 import 'package:study_management_app/data/sources/local/todo.dart';
 
-class ToDoListViewModel extends StateNotifier<Map<ToDoFilter, List<ToDoItemData>>> {
+class ToDoListViewModel
+    extends StateNotifier<Map<ToDoFilter, List<ToDoItemData>>> {
   final ToDoRepository _repository;
   final List<StreamSubscription> _subscriptions = [];
 
   ToDoListViewModel(this._repository)
       : super({
-    ToDoFilter.today: [],
-    ToDoFilter.upcoming: [],
-    ToDoFilter.hold: [],
-  }) {
+          ToDoFilter.today: [],
+          ToDoFilter.upcoming: [],
+          ToDoFilter.hold: [],
+        }) {
     _initListeners();
   }
 
   void _initListeners() {
+    /// 오늘의 투두리스트 stream
     _subscriptions.add(_repository.watchTodayToDos().listen((list) {
-      for (var item in list) {
-        print('---------------------- title: ${item.title} ------------------------');
-      }
       if (mounted) {
         state = {
           ...state,
@@ -32,10 +31,8 @@ class ToDoListViewModel extends StateNotifier<Map<ToDoFilter, List<ToDoItemData>
       }
     }));
 
+    /// 예정된 투두리스트
     _subscriptions.add(_repository.watchUpcomingToDos().listen((list) {
-      for (var item in list) {
-        print('---------------------- title: ${item.title} ------------------------');
-      }
       if (mounted) {
         state = {
           ...state,
@@ -44,6 +41,7 @@ class ToDoListViewModel extends StateNotifier<Map<ToDoFilter, List<ToDoItemData>
       }
     }));
 
+    /// 보류 투두리스트
     _subscriptions.add(_repository.watchHoldToDos().listen((list) {
       if (mounted) {
         state = {
@@ -54,6 +52,7 @@ class ToDoListViewModel extends StateNotifier<Map<ToDoFilter, List<ToDoItemData>
     }));
   }
 
+  /// 체크박스 클릭
   Future<void> toggleCheck(int id, bool isChecked) async {
     await _repository.toggleCheck(id, isChecked);
   }
@@ -61,12 +60,13 @@ class ToDoListViewModel extends StateNotifier<Map<ToDoFilter, List<ToDoItemData>
   @override
   void dispose() {
     for (final sub in _subscriptions) {
-      sub.cancel();  // 🟢 구독 해제
+      sub.cancel(); // 🟢 구독 해제
     }
     super.dispose();
   }
 }
 
+/// 투두리스트 프로바이더
 final toDoListProvider = StateNotifierProvider.autoDispose<ToDoListViewModel,
     Map<ToDoFilter, List<ToDoItemData>>>((ref) {
   print('autoDispose test');

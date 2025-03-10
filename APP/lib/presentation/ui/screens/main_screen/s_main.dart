@@ -24,10 +24,15 @@ class MainScreen extends ConsumerWidget {
     final bottomIndex = ref.watch(bottomNavProvider);
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: CustomAppBar(bottomIndex: bottomIndex),
-        body: IndexedStack(
-          index: bottomIndex,
-          children: tabList,
+        // appBar: CustomAppBar(bottomIndex: bottomIndex),
+        // appBar: AppBar(
+        //   toolbarHeight: 0,
+        // ),
+        body: SafeArea(
+          child: IndexedStack(
+            index: bottomIndex,
+            children: tabList,
+          ),
         ),
         bottomNavigationBar: const BottomNavBar());
   }
