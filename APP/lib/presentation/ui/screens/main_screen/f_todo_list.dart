@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_management_app/core/constatnts/todo_filter.dart';
 import 'package:study_management_app/core/providers/app_state_provider.dart';
+import 'package:study_management_app/presentation/ui/widgets/w_category_selector.dart';
 import 'package:study_management_app/presentation/ui/widgets/w_todo_filter_segment.dart';
+import 'package:study_management_app/presentation/viewModel/cagegory_view_model.dart';
 import 'package:study_management_app/presentation/viewModel/todo_list_view_model.dart';
 import 'package:study_management_app/presentation/ui/screens/main_screen/todo_list_tab/filtered_todo_list.dart';
 
@@ -18,11 +20,18 @@ class ToDoListTab extends ConsumerWidget {
 
     return Stack(
       alignment: Alignment.center,
-      fit: StackFit.expand,
       children: [
-        FilteredToDoList(
-          key: PageStorageKey(currentFilter), // currentFilter로 key 값 설정 -> 스크롤 상태 유지
-          filteredToDoList: filteredList,
+        Column(
+          children: [
+            const CategorySelector(),
+            Expanded(
+              child: FilteredToDoList(
+                key: PageStorageKey(currentFilter),
+                // currentFilter로 key 값 설정 -> 스크롤 상태 유지
+                filteredToDoList: filteredList,
+              ),
+            ),
+          ],
         ),
         Positioned(
           bottom: 10,
@@ -36,3 +45,9 @@ class ToDoListTab extends ConsumerWidget {
     );
   }
 }
+
+//ToDoFilterSegment(
+//             currentFilter: currentFilter,
+//             onFilterChanged: (filter) =>
+//                 ref.read(toDoFilterProvider.notifier).state = filter,
+//           ),

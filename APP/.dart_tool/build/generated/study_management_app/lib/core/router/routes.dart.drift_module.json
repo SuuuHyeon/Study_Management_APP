@@ -1,8 +1,0 @@
-{
-  "elements": {},
-  "imports": [
-    "package:flutter/material.dart",
-    "package:go_router/go_router.dart",
-    "package:study_management_app/presentation/ui/screens/main_screen/s_main.dart"
-  ]
-}

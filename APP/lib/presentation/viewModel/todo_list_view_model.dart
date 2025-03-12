@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_management_app/core/constatnts/todo_filter.dart';
 import 'package:study_management_app/core/providers/app_state_provider.dart';
@@ -55,6 +56,16 @@ class ToDoListViewModel
   /// 체크박스 클릭
   Future<void> toggleCheck(int id, bool isChecked) async {
     await _repository.toggleCheck(id, isChecked);
+  }
+
+  Future<void> createToDo(
+      String title, DateTime startTime, String category) async {
+    final ToDoItemCompanion toDo = ToDoItemCompanion(
+      title: Value(title),
+      startTime: Value(startTime),
+      category: Value(category),
+    );
+    await _repository.createToDoItem(toDo);
   }
 
   @override

@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
+import 'category.dart';
+
 part 'todo.g.dart';
 
 /// 투두 테이블
@@ -18,7 +20,7 @@ class ToDoItem extends Table {
   BoolColumn get isHold => boolean().withDefault(const Constant(false))();
 }
 
-@DriftDatabase(tables: [ToDoItem])
+@DriftDatabase(tables: [ToDoItem, Category])
 class AppDatabase extends _$AppDatabase {
   // Singleton instance
   static final AppDatabase _instance = AppDatabase._internal();
@@ -60,9 +62,16 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
+  // 카테고리 조회
+  Future<List<CategoryData>> getCategoryList() async {
+    final categories = await select(category).get();
+    print('(database) categories: $categories');
+    return categories;
+  }
+
   @override
   // TODO: implement schemaVersion
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -73,6 +82,9 @@ class AppDatabase extends _$AppDatabase {
       if (from < 2) {
         await m.addColumn(toDoItem, toDoItem.isHold);
         await customStatement('UPDATE to_do_item SET isHold = 0'); // ✅ 기존 데이터에 기본값 설정
+      }
+      if (from < 3) {
+        await m.createTable(category);
       }
     },
   );

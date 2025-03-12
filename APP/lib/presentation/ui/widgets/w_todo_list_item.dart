@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:study_management_app/presentation/viewModel/todo_list_view_model.dart';
 
-
 /// 투두 아이템 위젯
 class ToDoListItem extends StatelessWidget {
   final String title;
@@ -26,7 +25,7 @@ class ToDoListItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
       ),
-      color: Colors.grey[200],
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(14.0),
         child: Row(
@@ -49,7 +48,7 @@ class ToDoListItem extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold),
                         ),
-                        Text(startTime.toString()),
+                        Text('${startTime?.month}월 ${startTime?.day}일'),
                       ],
                     ),
                   ),

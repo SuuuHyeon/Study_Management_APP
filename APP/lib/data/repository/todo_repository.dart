@@ -60,4 +60,9 @@ class ToDoRepository {
     await (_db.update(_db.toDoItem)..where((t) => t.id.equals(id)))
         .write(ToDoItemCompanion(isChecked: Value(isChecked)));
   }
+
+  /// 카테고리 리스트 조회
+  Future<List<CategoryData>> getCategoryList() async {
+    return _db.getCategoryList();
+  }
 }
