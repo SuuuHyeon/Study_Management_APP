@@ -28,40 +28,47 @@ class ToDoListItem extends StatelessWidget {
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(14.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Icon(Icons.circle, size: 16),
-            ),
-            const SizedBox(width: 6),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold),
-                        ),
-                        Text('${startTime?.month}월 ${startTime?.day}일'),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    child: Checkbox(
-                      value: isChecked,
-                      onChanged: toggle,
-                    ),
-                  ),
-                ],
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const VerticalDivider(
+                thickness: 3,
+                endIndent: 7,
+                indent: 7,
+                width: 5,
+                color: Colors.indigo,
               ),
-            ),
-          ],
+              const SizedBox(width: 6),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold),
+                          ),
+                          Text('${startTime?.month}월 ${startTime?.day}일'),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      child: Checkbox(
+                        checkColor: Colors.white,
+                        activeColor: Colors.indigo,
+                        value: isChecked,
+                        onChanged: toggle,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

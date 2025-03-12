@@ -19,26 +19,38 @@ class CategorySelector extends ConsumerWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         children: [
+          ChoiceChip(
+            label: const Text('전체'),
+            selected: selectedCategory == '전체',
+            onSelected: (isSelected) =>
+                ref.read(selectedCategoryProvider.notifier).state = '전체',
+            backgroundColor: Colors.grey[200],
+            selectedColor: Colors.blueGrey[200],
+          ),
+          const VerticalDivider(
+              thickness: 1, endIndent: 10, indent: 10, width: 20),
           ...categories.map((category) => Row(
-            children: [
-              ChoiceChip(
-                label: Text(category.name),
-                selected: selectedCategory == category.name,
-                onSelected: (isSelected) {
-                  final newCategory = isSelected ? category.name : '전체';
-                  ref.read(selectedCategoryProvider.notifier).state = newCategory;
+                children: [
+                  ChoiceChip(
+                    label: Text(category.name),
+                    selected: selectedCategory == category.name,
+                    onSelected: (isSelected) {
+                      final newCategory = isSelected ? category.name : '전체';
+                      ref.read(selectedCategoryProvider.notifier).state =
+                          newCategory;
 
-                  // ✅ 변경된 `selectedCategoryProvider` 값을 즉시 확인
-                  print('category ID: ${category.id}');
-                  print('selectedCategory: ${ref.read(selectedCategoryProvider)}');
-                },
-                backgroundColor: Colors.grey[200],
-                selectedColor: Colors.blueGrey[200],
-              ),
-              // 리스트 구분
-              const VerticalDivider(thickness: 1, endIndent: 10, indent: 10, width: 20),
-            ],
-          )),
+                      print('category ID: ${category.id}');
+                      print(
+                          'selectedCategory: ${ref.read(selectedCategoryProvider)}');
+                    },
+                    backgroundColor: Colors.grey[200],
+                    selectedColor: Colors.blueGrey[200],
+                  ),
+                  // 리스트 구분
+                  const VerticalDivider(
+                      thickness: 1, endIndent: 10, indent: 10, width: 20),
+                ],
+              )),
           ActionChip(
             label: const Text('＋ 추가', style: TextStyle(color: Colors.black87)),
             backgroundColor: Colors.grey[300],
